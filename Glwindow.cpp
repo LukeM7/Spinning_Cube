@@ -25,11 +25,15 @@ void Glwindow::Initialize() {
 
 	if (!mainWindow) {
 		printf("Window failed to create");
+		glfwTerminate();
 		return;
 	}
 
-	if (!glewInit()) {
+	glfwMakeContextCurrent(mainWindow);
+
+	if (glewInit() != GLEW_OK) {
 		printf("Glew failed to initialize");
+		glfwTerminate();
 		return;
 	}
 

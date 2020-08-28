@@ -44,4 +44,14 @@ GLfloat vertices[] = {
 int main() {
 	window = new Glwindow();
 	window->Initialize();
+
+	while (!window->ShouldWindowClose()) {
+		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
+
+		window->SwapFrameBuffers();
+		glfwPollEvents();
+	}
+
+	return 0;
 }

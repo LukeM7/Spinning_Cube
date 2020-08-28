@@ -18,5 +18,7 @@ public:
 	~Glwindow();
 
 	void Initialize();
+	bool ShouldWindowClose() { return glfwWindowShouldClose(mainWindow); }
+	void SwapFrameBuffers() { return glfwSwapBuffers(mainWindow); }
 };
 
