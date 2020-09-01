@@ -43,5 +43,17 @@ void Mesh::RenderMesh() {
 }
 
 void Mesh::ClearMesh() {
-
+	if (IBO != 0) {
+		glDeleteBuffers(1, &IBO);
+		IBO = 0;
+	}
+	if (VBO != 0) {
+		glDeleteBuffers(1, &VBO);
+		VBO = 0;
+	}
+	if (VAO != 0) {
+		glDeleteBuffers(1, &VAO);
+		VAO = 0;
+	}
+	index_count = 0;
 }

@@ -1,6 +1,6 @@
 #include "Glwindow.h"
 
-Glwindow::Glwindow() : width(800), height(600) {}
+Glwindow::Glwindow() : width(1920), height(1080) {}
 Glwindow::Glwindow(GLint window_width, GLint window_height) : width(window_width), height(window_height) {}
 
 Glwindow::~Glwindow() {
