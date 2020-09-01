@@ -20,6 +20,7 @@ std::vector<Shader*> shaderList;
 const char* vertexShader = "Shaders/shader.vert";
 const char* fragmentShader = "Shaders/shader.frag";
 
+float offset = 0.0f;
 
 unsigned int indices[] = {
 	// Back Side
@@ -69,6 +70,14 @@ void CreateShaderProgram() {
 	shaderList.push_back(shader);
 }
 
+static float SpinAngle() {
+	offset += 1.2f;
+	if (offset >= 360.0f) {
+		offset -= 360.0f;
+	}
+	return offset;
+}
+
 int main() {
 	window = new Glwindow();
 	window->Initialize();
@@ -91,9 +100,10 @@ int main() {
 		uniformProjection = shaderList[0]->GetProjection();
 
 		glm::mat4 model(1.0);
-		model = glm::rotate(model,glm::radians(45.0f), glm::vec3(0.0f,1.0f,0.0f));
-		model = glm::translate(model, glm::vec3(15.0f, 0.0f, -8.0f));
-
+		
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, -5.0f));
+		model = glm::rotate(model, glm::radians(SpinAngle()), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
 
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		glUniformMatrix4fv(uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
@@ -108,3 +118,4 @@ int main() {
 
 	return 0;
 }
+
