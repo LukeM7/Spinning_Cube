@@ -11,6 +11,7 @@
 #include "Glwindow.h"
 #include "Mesh.h"
 #include "Shader.h"
+#include "Camera.h"
 
 Glwindow* window;
 
@@ -19,6 +20,9 @@ std::vector<Shader*> shaderList;
 
 const char* vertexShader = "Shaders/shader.vert";
 const char* fragmentShader = "Shaders/shader.frag";
+
+GLfloat deltaTime = 0.0f;
+GLfloat prevTime = 0.0f;
 
 float offset = 0.0f;
 
@@ -78,19 +82,29 @@ static float SpinAngle() {
 	return offset;
 }
 
+static GLfloat DeltaTime() {
+	deltaTime = glfwGetTime() - prevTime;
+	prevTime = glfwGetTime();
+	return deltaTime;
+}
+
 int main() {
 	window = new Glwindow();
 	window->Initialize();
 
 	CreateObject();
 	CreateShaderProgram();
+	Camera* camera = new Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, -90.0f, 0.0f, 5.0f);
 
-	GLuint uniformModel = 0, uniformProjection = 0;
+	GLuint uniformModel = 0, uniformProjection = 0, uniformView = 0;
 
-	glm::mat4 projection = glm::perspective(45.0f, window->GetBufferWidth() / window->GetBufferHeight(), 0.1f, 100.0f);
+	glm::mat4 projection = glm::perspective(45.0f, window->GetBufferWidth() / window->GetBufferHeight(), 0.5f, 100.0f);
 
 
 	while (!window->ShouldWindowClose()) {
+		glfwPollEvents();
+		camera->KeyControl(window->GetKeys(), DeltaTime());
+
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -98,6 +112,7 @@ int main() {
 
 		uniformModel = shaderList[0]->GetModel();
 		uniformProjection = shaderList[0]->GetProjection();
+		uniformView = shaderList[0]->GetView();
 
 		glm::mat4 model(1.0);
 		
@@ -106,6 +121,7 @@ int main() {
 		model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
 
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera->GetViewMatrix()));
 		glUniformMatrix4fv(uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
 
 		meshList[0]->RenderMesh();
@@ -113,7 +129,6 @@ int main() {
 		glUseProgram(0);
 
 		window->SwapFrameBuffers();
-		glfwPollEvents();
 	}
 
 	return 0;

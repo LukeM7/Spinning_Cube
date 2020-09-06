@@ -12,7 +12,7 @@ class Shader
 	const char* vShader;
 	const char* fShader;
 
-	GLuint shaderID, uniformModel, uniformProjection;
+	GLuint shaderID, uniformModel, uniformProjection, uniformView;
 
 	void CompileShaders(const char* vertexCode, const char* fragmentCode);
 	std::string ReadFromFile(const char* fileLocation);
@@ -21,5 +21,6 @@ public:
 	void UseShader();
 	GLuint GetModel() { return uniformModel; }
 	GLuint GetProjection() { return uniformProjection; }
+	GLuint GetView() { return uniformView; }
 };
 

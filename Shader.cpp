@@ -100,6 +100,7 @@ void Shader::CompileShaders(const char* vertexCode, const char* fragmentCode) {
 
 	uniformModel = glGetUniformLocation(shaderID, "model");
 	uniformProjection = glGetUniformLocation(shaderID, "projection");
+	uniformView = glGetUniformLocation(shaderID, "view");
 
 	// Destroying shaders that are now linked
 	glDeleteShader(vShader);
