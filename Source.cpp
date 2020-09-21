@@ -83,8 +83,9 @@ static float SpinAngle() {
 }
 
 static GLfloat DeltaTime() {
-	deltaTime = glfwGetTime() - prevTime;
-	prevTime = glfwGetTime();
+	GLfloat instant = glfwGetTime();
+	deltaTime = instant - prevTime;
+	prevTime = instant;
 	return deltaTime;
 }
 
@@ -94,7 +95,7 @@ int main() {
 
 	CreateObject();
 	CreateShaderProgram();
-	Camera* camera = new Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, -90.0f, 0.0f, 5.0f);
+	Camera* camera = new Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, -90.0f, 0.0f, 5.0f, 0.125f);
 
 	GLuint uniformModel = 0, uniformProjection = 0, uniformView = 0;
 
@@ -104,6 +105,8 @@ int main() {
 	while (!window->ShouldWindowClose()) {
 		glfwPollEvents();
 		camera->KeyControl(window->GetKeys(), DeltaTime());
+		camera->MouseControl(window->Get_X_Change(), window->Get_Y_Change());
+		printf("Mouse X Change: %f\nMouse Y Change: %f", window->Get_X_Change(), window->Get_Y_Change());
 
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

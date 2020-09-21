@@ -15,13 +15,15 @@ class Camera
 	GLfloat camera_pitch, camera_yaw, camera_roll;
 	GLfloat move_speed, turn_speed;
 
+
 public:
-	Camera(glm::vec3 position, glm::vec3 up, GLfloat pitch, GLfloat yaw, GLfloat roll, GLfloat move_speed);
+	Camera(glm::vec3 position, glm::vec3 up, GLfloat pitch, GLfloat yaw, GLfloat roll, GLfloat move_speed,GLfloat turn_speed);
 	~Camera();
 
 	void Update();
 
 	void KeyControl(bool* key, GLfloat delta_time);
+	void MouseControl(GLfloat x_change, GLfloat y_change);
 	glm::mat4 GetViewMatrix();
 };
 
